@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterAdminRequest;
+use App\Http\Requests\RegisterCustomerRequest;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use PhpParser\ErrorHandler\Collecting;
@@ -37,7 +38,7 @@ class CustomerController extends Controller
         }
     }
     
-    public function customerRegister(RegisterAdminRequest $request)
+    public function customerRegister(RegisterCustomerRequest $request)
     {
         // dd($request->all());
         $customer = Customer::create([
@@ -49,7 +50,7 @@ class CustomerController extends Controller
              'password' => $request->password,
          ]);
 
-        $token = auth()->login($customer);
+        $token = auth('customers')->login($customer);
 
         return $this->respondWithToken($token);
     }
